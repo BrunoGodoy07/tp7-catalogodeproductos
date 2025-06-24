@@ -7,8 +7,15 @@ export default function Navbar() {
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
       .then(res => res.json())
-      .then(data => setCategorias(data));
+      .then(data => setCategorias(Array.isArray(data) ? data : []))
+      .catch(() => setCategorias([])); // en caso de error, array vacío
   }, []);
+
+  // Función segura para capitalizar
+  function capitalizar(cat) {
+    if (typeof cat !== "string") return "";
+    return cat.charAt(0).toUpperCase() + cat.slice(1);
+  }
 
   return (
     <nav>
@@ -31,7 +38,7 @@ export default function Navbar() {
                   to={`/productos/categoria/${cat}`}
                   className={({ isActive }) => isActive ? "active" : ""}
                 >
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  {capitalizar(cat)}
                 </NavLink>
               </li>
             ))}

@@ -29,8 +29,7 @@ export default function ProductoDetalle() {
     <section>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "2.5rem", alignItems: "center", justifyContent: "center" }}>
         <img
-          src=""
-          // src={producto.images?.[0] || "https://via.placeholder.com/200"}
+          src={producto.images?.[0] || "https://via.placeholder.com/200"}
           alt={producto.title}
           width={220}
           height={220}
