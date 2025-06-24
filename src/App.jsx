@@ -6,6 +6,7 @@ import Contacto from "./pages/Contacto";
 import Productos from "./pages/Productos";
 import ProductoDetalle from "./pages/ProductoDetalle";
 import AgregarProducto from "./pages/AgregarProducto";
+import AgregarProductoPage from "./pages/AgregarProductoPage";
 
 export default function App() {
   return (
@@ -19,6 +20,8 @@ export default function App() {
           <Route path="/productos/:idProducto" element={<ProductoDetalle />} />
           <Route path="/agregar-producto" element={<AgregarProducto onProductoAgregado={() => {}} />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/productos" element={<Productos />} />
+          <Route path="/agregar-producto-page" element={<AgregarProductoPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

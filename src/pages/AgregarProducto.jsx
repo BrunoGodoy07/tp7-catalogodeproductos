@@ -1,48 +1,60 @@
 import { useState } from "react";
 
-export default function AgregarProducto({ onProductoAgregado }) {
-  const [form, setForm] = useState({
+export default function AgregarProducto({
+  onProductoAgregado,
+  form,
+  setForm,
+  showTitle = true
+}) {
+  const [mensaje, setMensaje] = useState("");
+
+  // Si no pasan form y setForm, usa estado interno (para retrocompatibilidad)
+  const [internalForm, setInternalForm] = useState({
     title: "",
     description: "",
     price: "",
     category: "",
     thumbnail: ""
   });
-  const [mensaje, setMensaje] = useState("");
+  const usedForm = form ?? internalForm;
+  const setUsedForm = setForm ?? setInternalForm;
 
   function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const nuevoForm = { ...usedForm, [e.target.name]: e.target.value };
+    setUsedForm(nuevoForm);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    // Validación básica
-    if (!form.title || !form.price || !form.category) {
+    if (!usedForm.title || !usedForm.price || !usedForm.category) {
       setMensaje("Por favor, completa los campos obligatorios.");
       return;
     }
-
-    // Simulación de POST (ya que dummyjson solo permite GET)
     let productoNuevo = {
-      ...form,
+      ...usedForm,
       id: Date.now(),
-      price: Number(form.price)
+      price: Number(usedForm.price)
     };
-    // Llama al callback para añadir el producto localmente
     onProductoAgregado(productoNuevo);
     setMensaje("¡Producto agregado!");
-    setForm({ title: "", description: "", price: "", category: "", thumbnail: "" });
+    setUsedForm({
+      title: "",
+      description: "",
+      price: "",
+      category: "",
+      thumbnail: ""
+    });
   }
 
   return (
     <section>
-      <h2>Agregar producto</h2>
+      {showTitle && <h2>Agregar producto</h2>}
       <form onSubmit={handleSubmit} style={{ maxWidth: 400, margin: "auto" }}>
         <input
           type="text"
           name="title"
           placeholder="Nombre del producto*"
-          value={form.title}
+          value={usedForm.title}
           onChange={handleChange}
           required
         />
@@ -50,14 +62,14 @@ export default function AgregarProducto({ onProductoAgregado }) {
           type="text"
           name="description"
           placeholder="Descripción"
-          value={form.description}
+          value={usedForm.description}
           onChange={handleChange}
         />
         <input
           type="number"
           name="price"
           placeholder="Precio*"
-          value={form.price}
+          value={usedForm.price}
           onChange={handleChange}
           required
           min={0}
@@ -66,7 +78,7 @@ export default function AgregarProducto({ onProductoAgregado }) {
           type="text"
           name="category"
           placeholder="Categoría*"
-          value={form.category}
+          value={usedForm.category}
           onChange={handleChange}
           required
         />
@@ -74,7 +86,7 @@ export default function AgregarProducto({ onProductoAgregado }) {
           type="text"
           name="thumbnail"
           placeholder="URL de imagen"
-          value={form.thumbnail}
+          value={usedForm.thumbnail}
           onChange={handleChange}
         />
         <button type="submit">Agregar</button>
