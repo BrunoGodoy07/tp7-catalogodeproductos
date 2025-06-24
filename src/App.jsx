@@ -5,6 +5,7 @@ import QuienesSomos from "./pages/QuienesSomos";
 import Contacto from "./pages/Contacto";
 import Productos from "./pages/Productos";
 import ProductoDetalle from "./pages/ProductoDetalle";
+import AgregarProducto from "./pages/AgregarProducto";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/productos" element={<Productos />} />
           <Route path="/productos/categoria/:idCategoria" element={<Productos />} />
           <Route path="/productos/:idProducto" element={<ProductoDetalle />} />
+          <Route path="/agregar-producto" element={<AgregarProducto onProductoAgregado={() => {}} />} />
           <Route path="/contacto" element={<Contacto />} />
         </Route>
       </Routes>
