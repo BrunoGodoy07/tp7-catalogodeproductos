@@ -5,7 +5,6 @@ import QuienesSomos from "./pages/QuienesSomos";
 import Contacto from "./pages/Contacto";
 import Productos from "./pages/Productos";
 import ProductoDetalle from "./pages/ProductoDetalle";
-import Style from "./styles/style.css"
 
 export default function App() {
   return (

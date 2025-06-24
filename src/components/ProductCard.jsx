@@ -4,7 +4,8 @@ export default function ProductCard({ producto }) {
   return (
     <div className="product-card">
       <img
-        src={producto.thumbnail || "https://via.placeholder.com/150"}
+        src=""
+        // src={producto.thumbnail || "https://via.placeholder.com/150"}
         alt={producto.title}
         width={150}
         height={150}
