@@ -20,11 +20,6 @@ export default function Navbar() {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/agregar-producto" className={({ isActive }) => isActive ? "active" : ""}>
-            Agregar productos
-          </NavLink>
-        </li>
-        <li>
           <NavLink to="/contacto" className={({ isActive }) => isActive ? "active" : ""}>
             Contacto
           </NavLink>

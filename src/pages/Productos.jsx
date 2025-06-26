@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
 export default function Productos() {
   const { idCategoria } = useParams();
-  const location = useLocation();
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Estado para productos locales (persistentes)
   const [productosLocales, setProductosLocales] = useState([]);
 
-  // Al montar, lee los productos locales de localStorage
+  // Leer productos locales desde localStorage al montar
   useEffect(() => {
     const guardados = localStorage.getItem("productosLocales");
-    setProductosLocales(guardados ? JSON.parse(guardados) : []);
-  }, [location]);
+    if (guardados) {
+      setProductosLocales(JSON.parse(guardados));
+    }
+  }, []);
 
-  // Cada vez que cambia la categoría, trae los productos de la API
+  // Guardar productosLocales cada vez que cambian
+  useEffect(() => {
+    localStorage.setItem("productosLocales", JSON.stringify(productosLocales));
+  }, [productosLocales]);
+
+  // Obtener productos de la API
   useEffect(() => {
     setLoading(true);
     let url = "https://dummyjson.com/products";
@@ -28,6 +36,23 @@ export default function Productos() {
       .finally(() => setLoading(false));
   }, [idCategoria]);
 
+  // Eliminar producto local por id
+  const eliminarProductoLocal = (id) => {
+    setProductosLocales(productosLocales.filter(p => p.id !== id));
+  };
+
+  // Filtro de categoría para productos locales
+  const productosLocalesFiltrados = idCategoria
+    ? productosLocales.filter(
+        p =>
+          p.category &&
+          p.category.trim().toLowerCase() === idCategoria.trim().toLowerCase()
+      )
+    : productosLocales;
+
+  // Combina productos agregados + productos de la API
+  const todosLosProductos = [...productosLocalesFiltrados, ...productos];
+
   if (loading)
     return (
       <section>
@@ -37,25 +62,11 @@ export default function Productos() {
       </section>
     );
 
-  // Filtro por categoría para los productos locales
-  const productosLocalesFiltrados = idCategoria
-    ? productosLocales.filter(
-        p =>
-          p.category &&
-          p.category.trim().toLowerCase() === idCategoria.trim().toLowerCase()
-      )
-    : productosLocales;
-
-  // Combina productos locales + productos de la API
-  const todosLosProductos = [...productosLocalesFiltrados, ...productos];
-
   return (
     <section>
       <h2>
         {idCategoria
-          ? `Productos de ${
-              idCategoria.charAt(0).toUpperCase() + idCategoria.slice(1)
-            }`
+          ? `Productos de ${idCategoria.charAt(0).toUpperCase() + idCategoria.slice(1)}`
           : "Todos los productos"}
       </h2>
       <div
@@ -67,7 +78,16 @@ export default function Productos() {
         }}
       >
         {todosLosProductos.map((prod) => (
-          <ProductCard key={prod.id} producto={prod} />
+          <ProductCard
+            key={prod.id}
+            producto={prod}
+            // Solo los productos locales pueden ser eliminados
+            onEliminar={
+              Number(prod.id) > 1000000 || prod.id.toString().length > 6
+                ? () => eliminarProductoLocal(prod.id)
+                : undefined
+            }
+          />
         ))}
       </div>
     </section>
