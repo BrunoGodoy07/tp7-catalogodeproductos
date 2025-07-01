@@ -1,11 +1,19 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useCart } from "../context/CardContext.jsx";
 
 export default function ProductoDetalle() {
   const { idProducto } = useParams();
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [esLocal, setEsLocal] = useState(false);
+  const { addToCart } = useCart();
+  const [cantidad, setCantidad] = useState(1);
+
+  const handleAdd = () => {
+    addToCart(producto, cantidad);
+    alert("Producto agregado al carrito!");
+  };
 
   useEffect(() => {
     // Primero busca en localStorage
@@ -41,6 +49,18 @@ export default function ProductoDetalle() {
       <p><strong>Precio:</strong> ${producto.price}</p>
       <p><strong>Categoría:</strong> {producto.category}</p>
       {esLocal && <span style={{ color: "#0071e3" }}>(Producto agregado por el usuario)</span>}
+
+      <label>
+        Cantidad:
+        <input
+          type="number"
+          min="1"
+          value={cantidad}
+          onChange={e => setCantidad(Number(e.target.value))}
+          style={{ width: 50, marginLeft: 8 }}
+        />
+      </label>
+      <button onClick={handleAdd}>Agregar al carrito</button>
     </section>
   );
 }
