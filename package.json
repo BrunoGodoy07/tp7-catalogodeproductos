@@ -1,6 +1,5 @@
 {
-  "name": "tp7-catalogodeproductos",
-  "homepage": "https://brunogodoy07.github.io/tp7-catalogodeproductos",
+  "name": "tp7-catalogodeproductos",  
   "private": true,
   "version": "0.0.0",
   "type": "module",
