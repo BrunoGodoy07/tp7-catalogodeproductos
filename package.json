@@ -1,5 +1,6 @@
 {
   "name": "tp7-catalogodeproductos",
+  "homepage": "https://brunogodoy07.github.io/tp7-catalogodeproductos",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -28,6 +29,5 @@
     "globals": "^16.2.0",
     "vite": "^5.2.10",
     "vite-plugin-gh-pages": "^1.0.1"
-  },
-  "homepage": "https://brunogodoy07.github.io/tp7-catalogodeproductos/"
+  }  
 }
