@@ -18,7 +18,6 @@ export default function ProductoDetalle() {
   };
 
   useEffect(() => {
-    // Primero busca en localStorage
     const productosLocales = JSON.parse(localStorage.getItem("productosLocales") || "[]");
     const encontrado = productosLocales.find(p => String(p.id) === String(idProducto));
     if (encontrado) {
@@ -26,7 +25,6 @@ export default function ProductoDetalle() {
       setEsLocal(true);
       setLoading(false);
     } else {
-      // Si no está, busca en la API
       setEsLocal(false);
       fetch(`https://dummyjson.com/products/${idProducto}`)
         .then(res => res.json())
