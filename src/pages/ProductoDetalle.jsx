@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCart } from "../context/CardContext.jsx";
+import Toast from "../components/Toast.jsx";
 
 export default function ProductoDetalle() {
   const { idProducto } = useParams();
@@ -9,14 +10,14 @@ export default function ProductoDetalle() {
   const [esLocal, setEsLocal] = useState(false);
   const { addToCart } = useCart();
   const [cantidad, setCantidad] = useState(1);
+  const [showToast, setShowToast] = useState(false);
 
   const handleAdd = () => {
     addToCart(producto, cantidad);
-    alert("Producto agregado al carrito!");
+    setShowToast(true);
   };
 
   useEffect(() => {
-    // Primero busca en localStorage
     const productosLocales = JSON.parse(localStorage.getItem("productosLocales") || "[]");
     const encontrado = productosLocales.find(p => String(p.id) === String(idProducto));
     if (encontrado) {
@@ -24,7 +25,6 @@ export default function ProductoDetalle() {
       setEsLocal(true);
       setLoading(false);
     } else {
-      // Si no está, busca en la API
       setEsLocal(false);
       fetch(`https://dummyjson.com/products/${idProducto}`)
         .then(res => res.json())
@@ -61,6 +61,13 @@ export default function ProductoDetalle() {
         />
       </label>
       <button onClick={handleAdd}>Agregar al carrito</button>
+
+      {showToast && (
+        <Toast
+          message="¡Producto agregado al carrito!"
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </section>
   );
 }
