@@ -45,14 +45,3 @@ Navbar.propTypes = {
   showCartWidget: PropTypes.bool,
   cartWidgetPosition: PropTypes.oneOf(['left', 'right']),
 };
-
-Navbar.defaultProps = {
-  menuItems: [
-    { path: "/", label: "Home" },
-    { path: "/quienes-somos", label: "Quiénes somos" },
-    { path: "/productos", label: "Productos" },
-    { path: "/contacto", label: "Contacto" }
-  ],
-  showCartWidget: true,
-  cartWidgetPosition: "right",
-};

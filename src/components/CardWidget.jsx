@@ -187,11 +187,3 @@ CartWidget.propTypes = {
   showQuantityInput: PropTypes.bool,
   showClearButton: PropTypes.bool,
 };
-
-CartWidget.defaultProps = {
-  cartIcon: "🛒",
-  emptyMessage: "El carrito está vacío.",
-  checkoutRoute: "/carrito",
-  showQuantityInput: true,
-  showClearButton: true,
-};

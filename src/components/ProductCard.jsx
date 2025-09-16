@@ -95,9 +95,3 @@ ProductCard.propTypes = {
   showLocalIndicator: PropTypes.bool,
   detailLinkText: PropTypes.string,
 };
-
-ProductCard.defaultProps = {
-  onEliminar: null,
-  showLocalIndicator: true,
-  detailLinkText: "Ver detalle",
-};

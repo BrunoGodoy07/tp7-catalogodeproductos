@@ -19,9 +19,3 @@ Header.propTypes = {
   logoAlt: PropTypes.string,
   logoPath: PropTypes.string,
 };
-
-Header.defaultProps = {
-  title: "Catálogo de Productos",
-  logoAlt: "Logo de la empresa",
-  logoPath: logo,
-};

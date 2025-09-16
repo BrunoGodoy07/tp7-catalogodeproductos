@@ -13,8 +13,3 @@ Footer.propTypes = {
   companyName: PropTypes.string,
   additionalText: PropTypes.string,
 };
-
-Footer.defaultProps = {
-  companyName: "Catálogo de Productos",
-  additionalText: null,
-};

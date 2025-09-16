@@ -34,7 +34,3 @@ Toast.propTypes = {
   onClose: PropTypes.func.isRequired,
   duration: PropTypes.number,
 };
-
-Toast.defaultProps = {
-  duration: 2000,
-};
