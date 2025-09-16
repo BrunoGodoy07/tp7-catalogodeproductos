@@ -1,10 +1,27 @@
+import PropTypes from "prop-types";
 import logo from "../assets/logo.png";
 
-export default function Header() {
+export default function Header({ 
+  title = "Catálogo de Productos", 
+  logoAlt = "Logo de la empresa",
+  logoPath = logo 
+}) {
   return (
     <header>
-      <img src={logo} alt="Logo" />
-      <h1>Catálogo de Productos</h1>
+      <img src={logoPath} alt={logoAlt} />
+      <h1>{title}</h1>
     </header>
   );
 }
+
+Header.propTypes = {
+  title: PropTypes.string,
+  logoAlt: PropTypes.string,
+  logoPath: PropTypes.string,
+};
+
+Header.defaultProps = {
+  title: "Catálogo de Productos",
+  logoAlt: "Logo de la empresa",
+  logoPath: logo,
+};

@@ -1,14 +1,20 @@
 import { useCart } from "../context/CardContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 
-export default function CartWidget() {
+export default function CartWidget({ 
+  cartIcon = "🛒",
+  emptyMessage = "El carrito está vacío.",
+  checkoutRoute = "/carrito",
+  showQuantityInput = true,
+  showClearButton = true
+}) {
   const { cart, removeFromCart, updateQuantity, clearCart, getTotal } = useCart();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const widgetRef = useRef();
 
-  // Cierre al click fuera
   useEffect(() => {
     function handleClickOutside(e) {
       if (open && widgetRef.current && !widgetRef.current.contains(e.target)) {
@@ -35,7 +41,7 @@ export default function CartWidget() {
         onClick={() => setOpen((prev) => !prev)}
         aria-label="Abrir carrito"
       >
-        🛒
+        {cartIcon}
         {cantidadTotal > 0 && (
           <span
             style={{
@@ -72,7 +78,7 @@ export default function CartWidget() {
         <h4 style={{ margin: "0 0 10px 0" }}>Carrito</h4>
         {cart.length === 0 ? (
           <div style={{ color: "#888", marginBottom: 8 }}>
-            El carrito está vacío.
+            {emptyMessage}
           </div>
         ) : (
           <div style={{ maxHeight: 280, overflowY: "auto" }}>
@@ -92,19 +98,23 @@ export default function CartWidget() {
                     <td style={{ padding: "4px 0" }}>{item.title}</td>
                     <td align="right">${item.price}</td>
                     <td align="center">
-                      <input
-                        type="number"
-                        min={1}
-                        value={item.quantity}
-                        onChange={e => updateQuantity(item.id, Number(e.target.value))}
-                        style={{
-                          width: 42,
-                          padding: "2px 4px",
-                          border: "1px solid #ddd",
-                          borderRadius: 4,
-                          textAlign: "center",
-                        }}
-                      />
+                      {showQuantityInput ? (
+                        <input
+                          type="number"
+                          min={1}
+                          value={item.quantity}
+                          onChange={e => updateQuantity(item.id, Number(e.target.value))}
+                          style={{
+                            width: 42,
+                            padding: "2px 4px",
+                            border: "1px solid #ddd",
+                            borderRadius: 4,
+                            textAlign: "center",
+                          }}
+                        />
+                      ) : (
+                        <span>{item.quantity}</span>
+                      )}
                     </td>
                     <td align="right">${(item.price * item.quantity).toFixed(2)}</td>
                     <td>
@@ -119,6 +129,7 @@ export default function CartWidget() {
                           fontSize: 18,
                         }}
                         title="Eliminar"
+                        aria-label={`Eliminar ${item.title} del carrito`}
                       >
                         ❌
                       </button>
@@ -131,22 +142,24 @@ export default function CartWidget() {
               Total: ${getTotal().toFixed(2)}
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
-              <button
-                onClick={clearCart}
-                style={{
-                  background: "#eee",
-                  border: "none",
-                  padding: "6px 12px",
-                  borderRadius: 5,
-                  cursor: "pointer",
-                }}
-              >
-                Vaciar
-              </button>
+              {showClearButton && (
+                <button
+                  onClick={clearCart}
+                  style={{
+                    background: "#eee",
+                    border: "none",
+                    padding: "6px 12px",
+                    borderRadius: 5,
+                    cursor: "pointer",
+                  }}
+                >
+                  Vaciar
+                </button>
+              )}
               <button
                 onClick={() => {
                   setOpen(false);
-                  navigate("/carrito");
+                  navigate(checkoutRoute);
                 }}
                 style={{
                   background: "#0071e3",
@@ -166,3 +179,19 @@ export default function CartWidget() {
     </div>
   );
 }
+
+CartWidget.propTypes = {
+  cartIcon: PropTypes.string,
+  emptyMessage: PropTypes.string,
+  checkoutRoute: PropTypes.string,
+  showQuantityInput: PropTypes.bool,
+  showClearButton: PropTypes.bool,
+};
+
+CartWidget.defaultProps = {
+  cartIcon: "🛒",
+  emptyMessage: "El carrito está vacío.",
+  checkoutRoute: "/carrito",
+  showQuantityInput: true,
+  showClearButton: true,
+};
